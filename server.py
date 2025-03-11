@@ -2,6 +2,8 @@ import os
 import openai
 from flask import Flask, request, render_template, jsonify
 from flask_cors import CORS  # ✅ PIEVIENO CORS ATBALSTU
+from flask_cors import CORS
+CORS(app)
 
 # 🚀 Ielādē API atslēgu no Render Environment Variables
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
