@@ -12,6 +12,7 @@ if not OPENAI_API_KEY:
     raise ValueError("❌ Kļūda: OpenAI API atslēga nav atrasta Render platformā!")
 
 openai.api_key = OPENAI_API_KEY
+print("API Response:", response)
 
 app = Flask(__name__)
 CORS(app)  # ✅ PIEVIENO CORS, LAI ATĻAUTU FETCH PIEPRASĪJUMUS NO PĀRLŪKA
@@ -54,11 +55,17 @@ def upload_file():
 # 🔥 OpenAI API Teksta Pārveidošana
 def convert_text_to_html(text):
     response = openai.ChatCompletion.create(
-        model="gpt-4",
-        messages=[{"role": "system", "content": "Formatējiet šo tekstu kā HTML dokumentu."},
-                  {"role": "user", "content": text}]
-    )
+    model="gpt-4o",
+    messages=[
+        {"role": "system", "content": "Formātējiet šo tekstu kā HTML dokumentu."},
+        {"role": "user", "content": text}
+    ],
+    temperature=0,  # Nodrošina precīzākas atbildes
+  
+)
     return response["choices"][0]["message"]["content"]
+
+print("API Response:", response)
 
 # 🚀 Startē Flask Serveri
 if __name__ == "__main__":
