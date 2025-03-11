@@ -58,7 +58,7 @@ def upload_file():
 def convert_text_to_html(text):
     try:
         payload = {
-            "model": "gpt-4",  # ✅ Izmanto jaunāko GPT-4 modeli
+        "model": "gpt-4o",  # ✅ Izmanto jaunāko GPT-4o modeli
             "messages": [
                 {"role": "system", "content": "Formātējiet šo tekstu kā HTML dokumentu."},
                 {"role": "user", "content": text}
