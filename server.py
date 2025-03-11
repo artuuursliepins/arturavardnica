@@ -58,14 +58,22 @@ def upload_file():
 def convert_text_to_html(text):
     try:
         payload = {
-            "model": "gpt-4o",  # ✅ Izmanto jaunāko GPT-4o modeli
+            "model": "gpt-4",  # ✅ Izmanto jaunāko GPT-4 modeli
             "messages": [
                 {"role": "system", "content": "Formātējiet šo tekstu kā HTML dokumentu."},
                 {"role": "user", "content": text}
             ],
             "temperature": 0,  # Nodrošina precīzākas atbildes
-            "max_tokens": None  # ⚠️ Neierobežots tokenu skaits!
-        }
+            "max_tokens": 100000  # Iestatiet ļoti lielu tokenu skaitu
+       
+
+        response = openai.ChatCompletion.create(**json.loads(json.dumps(payload)))  # ✅ JSON DROŠA FORMATĒŠANA
+
+        return response["choices"][0]["message"]["content"]
+
+    except OpenAIError as e:
+        print(f"❌ OpenAI API kļūda: {str(e)}")  # ✅ LOGS kļūdu gadījumā
+        return "⚠️ Kļūda OpenAI API pieprasījumā!"
 
         response = openai.ChatCompletion.create(**json.loads(json.dumps(payload)))  # ✅ JSON DROŠA FORMATĒŠANA
 
