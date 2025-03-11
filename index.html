@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matemātisko Simbolu Vārdnīca</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+</head>
+<body>
+    <!-- 🔵 Galvene -->
+    <div class="header">
+        <h1>Matemātisko Simbolu Vārdnīca</h1>
+        <form id="uploadForm" enctype="multipart/form-data">
+            <input type="file" id="fileInput" accept=".txt">
+            <button type="submit">📤 Augšupielādēt</button>
+        </form>
+    </div>
+
+    <!-- 📌 Pamatdaļa -->
+    <div class="container">
+        <h2>📌 Satura Rādītājs</h2>
+        <ul id="symbolList">
+            <!-- Šeit dinamiski tiks pievienotas saites uz tematiskajiem blokiem -->
+        </ul>
+
+        <div id="contentSection">
+            <!-- Šeit tiks ielādēta pilnā informācija -->
+        </div>
+    </div>
+
+    <!-- ℹ️ Kājenes sadaļa -->
+    <footer>
+        <p>🔹 Šī sistēma ļauj augšupielādēt un strukturēt matemātisko simbolu vārdnīcu.</p>
+        <p>🛠️ <strong>Kā tas darbojas?</strong> Pievienojiet `.txt` failu, un sistēma to sakārtos pa tematiem.</p>
+    </footer>
+</body>
+</html>

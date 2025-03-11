@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #ffffff; /* Balts pamats */
+    color: #333333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.header {
+    width: 100%;
+    background: #ececf1;
+    padding: 20px;
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    color: #000000;
+    border-bottom: 1px solid #d1d5db;
+}
+
+.container {
+    max-width: 900px;
+    margin: 20px;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+button {
+    background: #10a37f;
+    color: white;
+    padding: 12px 20px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 50px;
+    transition: 0.3s;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+    background: #0f8b68;
+}
+
+input[type="file"] {
+    padding: 10px;
+    margin: 10px 0;
+    background: #ffffff;
+    color: #333;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    padding: 10px;
+    font-size: 16px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+ul li {
+    padding: 12px;
+    background: #f3f4f6;
+    margin-bottom: 8px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: 0.3s;
+    text-align: center;
+    font-weight: 600;
+    border: 1px solid #d1d5db;
+}
+
+ul li:hover {
+    background: #e5e7eb;
+}
+
+footer {
+    background: #ececf1;
+    width: 100%;
+    text-align: center;
+    padding: 15px;
+    font-size: 14px;
+    color: #4b5563;
+    position: fixed;
+    bottom: 0;
+    border-top: 1px solid #d1d5db;
+}
