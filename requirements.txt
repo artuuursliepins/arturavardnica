@@ -1,4 +1,4 @@
-flask
-pyngrok
+Flask
+flask-cors
 openai
 gunicorn
