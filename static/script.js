@@ -12,7 +12,7 @@ document.getElementById("uploadForm").addEventListener("submit", async function 
     formData.append("file", fileInput.files[0]);
 
     try {
-        let response = await fetch("https://arturavardnica.onrender.com/upload", {  // ✅ PĀRLIECINIES, KA ŠEIT IR PAREIZA SAITE UZ TAVU SERVERI!
+        let response = await fetch("https://arturavardnica.onrender.com/upload", {  // ✅ PĀRLIECINIES, KA ŠEIT IR PAREIZA SAITE UZ SERVERI!
             method: "POST",
             body: formData
         });
