@@ -2,6 +2,7 @@ import os
 import openai
 from flask import Flask, request, render_template, redirect, url_for, session, jsonify
 from pyngrok import ngrok
+from flask_cors import CORS  # ✅ PIEVIENO CORS ATBALSTU
 
 # 🚀 Ielādē API atslēgu no Render Environment Variables
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -12,7 +13,7 @@ if not OPENAI_API_KEY:
 openai.api_key = OPENAI_API_KEY
 
 app = Flask(__name__)
-app.secret_key = "super_secret_key"
+CORS(app)  # ✅ PIEVIENO CORS, LAI ATĻAUTU FETCH PIEPRASĪJUMUS NO PĀRLŪKA
 
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -25,15 +26,21 @@ def home():
 # 📤 Failu augšupielāde un apstrāde
 @app.route("/upload", methods=["POST"])
 def upload_file():
+    print("📥 Saņemts pieprasījums uz /upload")  # ✅ DEBUG: PĀRBAUDI, VAI PIEPRASĪJUMS NONĀK SERVERĪ
+
     if "file" not in request.files:
+        print("❌ Nav augšupielādēts fails!")  # ✅ DEBUG LOG
         return jsonify({"error": "❌ Nav augšupielādēts fails!"}), 400
     
     file = request.files["file"]
     if file.filename == "":
+        print("❌ Nav izvēlēts fails!")  # ✅ DEBUG LOG
         return jsonify({"error": "❌ Nav izvēlēts fails!"}), 400
 
     file_path = os.path.join(UPLOAD_FOLDER, file.filename)
     file.save(file_path)
+
+    print(f"✅ Fails saglabāts: {file_path}")  # ✅ DEBUG LOG
 
     # 🚀 Pārveido saturu ar OpenAI API
     with open(file_path, "r", encoding="utf-8") as f:
