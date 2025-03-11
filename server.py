@@ -66,7 +66,7 @@ def convert_text_to_html(text):
             "temperature": 0,  # Nodrošina precīzākas atbildes
             "max_tokens": 100000  # Iestatiet ļoti lielu tokenu skaitu
        
-
+}
         response = openai.ChatCompletion.create(**json.loads(json.dumps(payload)))  # ✅ JSON DROŠA FORMATĒŠANA
 
         return response["choices"][0]["message"]["content"]
