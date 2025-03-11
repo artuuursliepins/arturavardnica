@@ -1,7 +1,6 @@
 import os
 import openai
-from flask import Flask, request, render_template, redirect, url_for, session, jsonify
-from pyngrok import ngrok
+from flask import Flask, request, render_template, jsonify
 from flask_cors import CORS  # ✅ PIEVIENO CORS ATBALSTU
 
 # 🚀 Ielādē API atslēgu no Render Environment Variables
@@ -61,6 +60,4 @@ def convert_text_to_html(text):
 
 # 🚀 Startē Flask Serveri
 if __name__ == "__main__":
-    public_url = ngrok.connect(10000).public_url
-    print(f"🚀 Ngrok publiskā saite: {public_url}")
     app.run(host="0.0.0.0", port=10000)
