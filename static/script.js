@@ -1,33 +1,27 @@
-const SERVER_URL = "https://34a0-34-106-31-252.ngrok-free.app"; // Tavs Flask servera URL
+document.getElementById("uploadForm").addEventListener("submit", async function (e) {
+    e.preventDefault();  // ✅ NEĻAUJ LAPAI PĀRLĀDĒTIES
 
-document.getElementById("uploadForm").addEventListener("submit", function (event) {
-    event.preventDefault();
+    let formData = new FormData();
+    let fileInput = document.getElementById("fileInput");
     
-    let fileInput = document.getElementById("fileInput").files[0];
-    if (!fileInput) {
-        alert("⚠️ Izvēlieties failu!");
+    if (fileInput.files.length === 0) {
+        alert("❌ Lūdzu izvēlies failu!");  // ✅ JA NAV FAILA, PARĀDĪT PAZIŅOJUMU
         return;
     }
 
-    let formData = new FormData();
-    formData.append("file", fileInput);
+    formData.append("file", fileInput.files[0]);
 
-    fetch(`${SERVER_URL}/upload`, { // Saista uz Flask serveri
-        method: "POST",
-        body: formData
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error("🚫 Neizdevās augšupielādēt failu!");
-        }
-        return response.text();
-    })
-    .then(() => {
-        alert("✅ Fails veiksmīgi augšupielādēts!");
-        setTimeout(() => window.location.reload(), 1000); // Automātiska atsvaidzināšana pēc 1s
-    })
-    .catch(error => {
-        console.error("❌ Kļūda:", error);
-        alert(error.message);
-    });
+    try {
+        let response = await fetch("https://arturavardnica.onrender.com/upload", {  // ✅ PĀRLIECINIES, KA ŠEIT IR PAREIZA SAITE UZ TAVU SERVERI!
+            method: "POST",
+            body: formData
+        });
+
+        if (!response.ok) throw new Error("Neizdevās augšupielādēt!");
+
+        let data = await response.json();
+        alert(data.message);  // ✅ PARĀDĪT VEIKSMES PAZIŅOJUMU
+    } catch (error) {
+        alert("❌ Failed to fetch: " + error.message);  // ✅ JA KĻŪDA, PARĀDĪT PAZIŅOJUMU
+    }
 });
