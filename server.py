@@ -74,6 +74,28 @@ def convert_text_to_html(text):
     except openai.error.OpenAIError as e:
         print(f"❌ OpenAI API kļūda: {str(e)}")  # ✅ LOGS kļūdu gadījumā
         return "⚠️ Kļūda OpenAI API pieprasījumā!"
+from openai.error import OpenAIError
+
+# 🔥 OpenAI API Teksta Pārveidošana
+def convert_text_to_html(text):
+    try:
+        payload = {
+            "model": "gpt-4o",  # ✅ Izmanto jaunāko GPT-4o modeli
+            "messages": [
+                {"role": "system", "content": "Formātējiet šo tekstu kā HTML dokumentu."},
+                {"role": "user", "content": text}
+            ],
+            "temperature": 0,  # Nodrošina precīzākas atbildes
+            "max_tokens": None  # ⚠️ Neierobežots tokenu skaits!
+        }
+
+        response = openai.ChatCompletion.create(**json.loads(json.dumps(payload)))  # ✅ JSON DROŠA FORMATĒŠANA
+
+        return response["choices"][0]["message"]["content"]
+
+    except OpenAIError as e:
+        print(f"❌ OpenAI API kļūda: {str(e)}")  # ✅ LOGS kļūdu gadījumā
+        return "⚠️ Kļūda OpenAI API pieprasījumā!"
 
 # 🚀 Startē Flask Serveri
 if __name__ == "__main__":
