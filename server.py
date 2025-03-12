@@ -1,22 +1,17 @@
+
 import os
-import openai
+from openai import OpenAI
 import yaml
 from flask import Flask, request, jsonify
 
-# 🚀 Ielādē OpenAI API atslēgu no konfigurācijas faila
-CONFIG_FILE = "config.yaml"
-if not os.path.exists(CONFIG_FILE):
-    raise FileNotFoundError("❌ Kļūda: Konfigurācijas fails 'config.yaml' nav atrasts!")
-
-with open(CONFIG_FILE, "r", encoding="utf-8") as f:
-    config = yaml.safe_load(f)
-    OPENAI_API_KEY = config.get("OPENAI_API_KEY")
+# 🚀 Ielādē OpenAI API atslēgu no Render Environment Variables
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 if not OPENAI_API_KEY:
-    raise ValueError("❌ Kļūda: OpenAI API atslēga nav norādīta konfigurācijas failā!")
+    raise ValueError("❌ Kļūda: OpenAI API atslēga nav atrasta Render vidē!")
 
 # ✅ OpenAI API inicializācija
-openai.api_key = OPENAI_API_KEY
+client = OpenAI(api_key=OPENAI_API_KEY)
 
 # 📂 Direktorijas failiem
 UPLOADS_DIR = "uploads"
@@ -31,36 +26,37 @@ def process_text(text):
         return "<p>❌ Tukšs saturs! Lūdzu, augšupielādējiet failu ar tekstu.</p>"
 
     try:
-        response = openai.ChatCompletion.create(
+        response = client.chat.completions.create(
             model="gpt-4o",
             messages=[
                 {"role": "system", "content": (
-                    "Tu esi AI, kas pārveido vienkāršu tekstu par SEO draudzīgu, semantiski korektu un responsīvu HTML. "
+                    "Tu esi AI, kas pārveido tekstu par SEO draudzīgu, semantiski korektu un tīmeklim optimizētu HTML."
                     "Tavi galvenie uzdevumi ir:\n\n"
-                    "✅ Automātiski identificēt un strukturēt saturu:\n"
-                    "  - Noteikt virsrakstus (H1-H6), rindkopas, sarakstus, tabulas un kodu blokus.\n"
-                    "  - Nodrošināt loģisku rindkopu dalījumu un izvairīties no liekām atstarpēm.\n"
-                    "  - Pievienot Bootstrap vai pielāgotas CSS klases, lai nodrošinātu vizuāli pievilcīgu attēlojumu.\n\n"
-                    "✅ Speciālo rakstzīmju aizvietošana:\n"
-                    "  - Korekti apstrādāt <, >, &, \" un citus HTML simbolus, lai nodrošinātu drošību.\n\n"
-                    "✅ Inteliģenta tabulu un koda formatēšana:\n"
-                    "  - Konvertēt tabulveida datus par <table> struktūru ar korektiem <thead>, <tbody>, <th>, <td> elementiem.\n"
-                    "  - Atpazīt programmēšanas kodu un ievietot to <pre><code> blokos ar atbilstošu sintakses izcelšanu (piemēram, Prism.js).\n\n"
-                    "✅ Drošības un validācijas mehānismi:\n"
-                    "  - Nodrošināt, ka HTML kods ir validējams pēc W3C standartiem.\n"
-                    "  - Novērst XSS ievainojamības, izvairoties no nevajadzīgiem inline skriptiem.\n\n"
-                    "🔹 Izvade: TIKAI tīrs un semantiski korekts HTML, piemērots tūlītējai lietošanai tīmeklī."
+                    "✅ **Automātiski analizēt un strukturēt tekstu:**\n"
+                    "- Atpazīt virsrakstus (H1-H6) un rindkopas.\n"
+                    "- Pārveidot sarakstus uz `<ul>` un `<ol>` HTML elementiem.\n"
+                    "- Konvertēt tabulas uz `<table>` ar `<thead>`, `<tbody>`, `<th>`, `<td>`.\n"
+                    "- Atpazīt programmēšanas kodu un ievietot to `<pre><code>` blokos.\n\n"
+                    "✅ **Lasāmība un vizuālais izkārtojums:**\n"
+                    "- Nodrošināt skaidru struktūru un pareizu formatējumu.\n"
+                    "- Noņemt lieko tekstu un tukšas rindas.\n"
+                    "- Izmantot Bootstrap vai pielāgotas CSS klases labākai vizuālajai skaidrībai.\n\n"
+                    "✅ **Drošības un validācijas mehānismi:**\n"
+                    "- Sanitizēt izvades HTML, lai izvairītos no XSS ievainojamībām.\n"
+                    "- Nodrošināt, ka visi speciālie simboli tiek pareizi kodēti (`<`, `>`, `&`, `\"`).\n"
+                    "- Saglabāt tikai nepieciešamo informāciju, neizvadot `system` vai `user` metadatus.\n\n"
+                    "🔹 **Izvade:** TIKAI validējams un tīrs **HTML kods** (bez liekiem paskaidrojumiem vai teksta)."
                 )},
                 {"role": "user", "content": text}
             ],
             temperature=0
         )
 
-        return response["choices"][0]["message"]["content"]
+        return response.choices[0].message.content
 
-    except openai.OpenAIError as e:
-        print(f"❌ OpenAI API kļūda: {str(e)}")
-        return "<p>❌ Kļūda, apstrādājot tekstu ar OpenAI.</p>"
+    except Exception as e:
+        print(f"🚨 Kļūda OpenAI API izsaukumā: {str(e)}")
+        return "<p>🚨 Kļūda: Sistēmas kļūme. Mēģiniet vēlreiz!</p>"
 
 # 🚀 Flask API
 app = Flask(__name__)
