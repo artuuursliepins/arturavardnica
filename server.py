@@ -1,7 +1,5 @@
-
 import os
 from openai import OpenAI
-import yaml
 from flask import Flask, request, jsonify
 
 # 🚀 Ielādē OpenAI API atslēgu no Render Environment Variables
@@ -10,8 +8,8 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 if not OPENAI_API_KEY:
     raise ValueError("❌ Kļūda: OpenAI API atslēga nav atrasta Render vidē!")
 
-# ✅ OpenAI API inicializācija
-client = OpenAI(api_key=OPENAI_API_KEY)
+# ✅ OpenAI API inicializācija (NAV nepieciešams nodot `api_key`!)
+client = OpenAI()
 
 # 📂 Direktorijas failiem
 UPLOADS_DIR = "uploads"
