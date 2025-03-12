@@ -1,3 +1,4 @@
+pip install --upgrade pip
 import os
 from openai import OpenAI
 from flask import Flask, request, jsonify
