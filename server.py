@@ -2,14 +2,12 @@ import os
 from openai import OpenAI
 from flask import Flask, request, jsonify
 
-# 🚀 Ielādē OpenAI API atslēgu no Render Environment Variables
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-
-if not OPENAI_API_KEY:
+# 🚀 API atslēga tiek ielādēta no Render Environment Variables
+if not os.getenv("OPENAI_API_KEY"):
     raise ValueError("❌ Kļūda: OpenAI API atslēga nav atrasta Render vidē!")
 
-# ✅ OpenAI API inicializācija (NAV nepieciešams nodot `api_key`!)
-client = OpenAI()
+# ✅ Pareizais OpenAI klienta inicializācijas veids
+client = OpenAI()  # API atslēgu SDK nolasa automātiski no ENV
 
 # 📂 Direktorijas failiem
 UPLOADS_DIR = "uploads"
@@ -19,7 +17,7 @@ os.makedirs(UPLOADS_DIR, exist_ok=True)
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 def process_text(text):
-    """ 📌 Sastrukturizē un optimizē tekstu par HTML, izmantojot GPT-4o """
+    """ 📌 Pārveido tekstu par SEO draudzīgu un semantiski korektu HTML """
     if not text.strip():
         return "<p>❌ Tukšs saturs! Lūdzu, augšupielādējiet failu ar tekstu.</p>"
 
