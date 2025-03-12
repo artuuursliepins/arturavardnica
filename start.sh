@@ -19,3 +19,6 @@ sleep 5
 curl -X GET http://0.0.0.0:10000/
 netstat -tulnp | grep :10000
 pip list | grep -E "flask|gunicorn|openai"
+
+# Check for active connections on port 10000
+netstat -an | grep 10000
