@@ -2,4 +2,5 @@
 flask
 flask-cors
 openai==1.2.3  # (Izmanto jaunāko versiju)
+OpenAI
 gunicorn
