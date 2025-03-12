@@ -1,6 +1,9 @@
-
-flask
+flask>=2.0.0,<3.0.0
 flask-cors
-openai==1.2.3  # (Izmanto jaunāko versiju)
-gunicorn
+gunicorn>=20.0.0,<21.0.0
+openai>=1.0.0,<2.0.0
+httpx>=0.23.0,<1.0.0
+urllib3>=1.26.0,<2.0.0
+requests>=2.25.0,<3.0.0
+python-dotenv>=1.0.0,<2.0.0
 pyyaml
