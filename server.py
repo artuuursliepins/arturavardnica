@@ -1,7 +1,7 @@
 import os
+import openai
 from flask import Flask, request, render_template, jsonify
 from flask_cors import CORS
-import openai
 
 # 🚀 Ielādē API atslēgu no Render Environment Variables
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -9,8 +9,8 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 if not OPENAI_API_KEY:
     raise ValueError("❌ Kļūda: OpenAI API atslēga nav atrasta Render platformā!")
 
-# ✅ Inicializē OpenAI klientu
-client = openai.OpenAI(api_key=OPENAI_API_KEY)
+# ✅ Pareiza OpenAI SDK inicializācija
+openai.api_key = OPENAI_API_KEY
 
 # 🌍 Flask aplikācija
 app = Flask(__name__)
@@ -60,7 +60,7 @@ def upload_file():
 # 🔥 OpenAI API Teksta Pārveidošana
 def convert_text_to_html(text):
     try:
-        response = client.chat.completions.create(
+        response = openai.ChatCompletion.create(
             model="gpt-4o",
             messages=[
                 {"role": "system", "content": "Formātējiet šo tekstu kā HTML dokumentu."},
@@ -68,9 +68,9 @@ def convert_text_to_html(text):
             ],
             temperature=0  # Nodrošina precīzākas atbildes
         )
-        return response.choices[0].message.content
+        return response["choices"][0]["message"]["content"]
 
-    except openai.OpenAIError as e:
+    except openai.error.OpenAIError as e:
         print(f"❌ OpenAI API kļūda: {str(e)}")
         return "<p>❌ Kļūda, apstrādājot tekstu ar OpenAI.</p>"
 
