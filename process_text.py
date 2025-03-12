@@ -1,5 +1,6 @@
 import os
 from openai import OpenAI
+import html
 
 # 🚀 Ielādē OpenAI API atslēgu no Render Environment Variables
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -43,8 +44,13 @@ def process_text(text):
             temperature=0
         )
 
-        return response.choices[0].message.content
+        html_output = response.choices[0].message.content
+
+        # ✅ Sanitizē HTML izvadi, lai novērstu XSS ievainojamības
+        safe_html_output = html.escape(html_output)
+
+        return safe_html_output
 
     except Exception as e:
         print(f"🚨 Kļūda OpenAI API izsaukumā: {str(e)}")
-        return "<p>🚨 Kļūda: Sistēmas kļūme. Mēģiniet vēlreiz!</p>"
+        return f"<p>🚨 Kļūda: {html.escape(str(e))}</p>"
