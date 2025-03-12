@@ -1,27 +1,32 @@
-document.getElementById("uploadForm").addEventListener("submit", async function (e) {
-    e.preventDefault();  // ✅ NEĻAUJ LAPAI PĀRLĀDĒTIES
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("uploadForm").addEventListener("submit", async function (e) {
+        e.preventDefault();  // ✅ Neļauj lapai pārlādēties
 
-    let formData = new FormData();
-    let fileInput = document.getElementById("fileInput");
-    
-    if (fileInput.files.length === 0) {
-        alert("❌ Lūdzu izvēlies failu!");  // ✅ JA NAV FAILA, PARĀDĪT PAZIŅOJUMU
-        return;
-    }
+        let fileInput = document.getElementById("fileInput");
+        if (!fileInput || fileInput.files.length === 0) {
+            alert("❌ Lūdzu izvēlies failu!");  // ✅ Ja nav faila, parādīt paziņojumu
+            return;
+        }
 
-    formData.append("file", fileInput.files[0]);
+        let formData = new FormData();
+        formData.append("file", fileInput.files[0]);
 
-    try {
-        let response = await fetch("https://arturavardnica.onrender.com/upload", {  // ✅ PĀRLIECINIES, KA ŠEIT IR PAREIZA SAITE UZ SERVERI!
-            method: "POST",
-            body: formData
-        });
+        try {
+            let response = await fetch("https://arturavardnica.onrender.com/upload", {  // ✅ Pārbaudi, vai šeit ir pareizā servera saite!
+                method: "POST",
+                body: formData
+            });
 
-        if (!response.ok) throw new Error("Neizdevās augšupielādēt!");
+            let data = await response.json();  // ✅ Pārvērš JSON formātā
 
-        let data = await response.json();
-        alert(data.message);  // ✅ PARĀDĪT VEIKSMES PAZIŅOJUMU
-    } catch (error) {
-        alert("❌ Failed to fetch: " + error.message);  // ✅ JA KĻŪDA, PARĀDĪT PAZIŅOJUMU
-    }
+            if (!response.ok) {
+                throw new Error(data.error || "Neizdevās augšupielādēt!");  // ✅ Precīzāka kļūdu ziņošana
+            }
+
+            alert("✅ Veiksmīgi augšupielādēts: " + data.message);  // ✅ Veiksmīga augšupielāde
+        } catch (error) {
+            console.error("Kļūda:", error);
+            alert("❌ Kļūda: " + error.message);  // ✅ Rāda detalizētāku kļūdu
+        }
+    });
 });
