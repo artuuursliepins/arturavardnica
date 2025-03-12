@@ -1,5 +1,5 @@
 import os
-import openai
+from openai import OpenAI
 
 # 🚀 Ielādē OpenAI API atslēgu no Render Environment Variables
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -7,8 +7,8 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 if not OPENAI_API_KEY:
     raise ValueError("❌ Kļūda: OpenAI API atslēga nav atrasta Render vidē!")
 
-# ✅ Pareiza OpenAI API inicializācija
-openai.api_key = OPENAI_API_KEY
+# ✅ OpenAI API inicializācija
+client = OpenAI(api_key=OPENAI_API_KEY)
 
 def process_text(text):
     """ 📌 Sastrukturizē un optimizē tekstu par HTML, izmantojot GPT-4o """
@@ -17,7 +17,7 @@ def process_text(text):
         return "<p>❌ Tukšs saturs! Lūdzu, augšupielādējiet failu ar tekstu.</p>"
 
     try:
-        response = openai.ChatCompletion.create(
+        response = client.chat.completions.create(
             model="gpt-4o",
             messages=[
                 {"role": "system", "content": (
@@ -43,12 +43,8 @@ def process_text(text):
             temperature=0
         )
 
-        return response["choices"][0]["message"]["content"]
-
-    except openai.OpenAIError as e:
-        print(f"❌ OpenAI API kļūda: {str(e)}")
-        return "<p>❌ Kļūda, apstrādājot tekstu ar OpenAI.</p>"
+        return response.choices[0].message.content
 
     except Exception as e:
-        print(f"🚨 Nezināma kļūda: {str(e)}")
+        print(f"🚨 Kļūda OpenAI API izsaukumā: {str(e)}")
         return "<p>🚨 Kļūda: Sistēmas kļūme. Mēģiniet vēlreiz!</p>"
