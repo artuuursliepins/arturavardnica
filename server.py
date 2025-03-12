@@ -1,7 +1,6 @@
 import os
 import openai
 import yaml
-pip install pyyaml
 from flask import Flask, request, jsonify
 
 # 🚀 Ielādē OpenAI API atslēgu no konfigurācijas faila
