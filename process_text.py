@@ -8,7 +8,7 @@ if not OPENAI_API_KEY:
     raise ValueError("❌ Kļūda: OpenAI API atslēga nav atrasta Render vidē!")
 
 # ✅ OpenAI API inicializācija
-client = OpenAI(api_key=OPENAI_API_KEY)
+client = OpenAI()
 
 def process_text(text):
     """ 📌 Sastrukturizē un optimizē tekstu par HTML, izmantojot GPT-4o """
