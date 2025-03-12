@@ -9,25 +9,29 @@
 </head>
 <body>
     <!-- 🔵 Galvene -->
-    <div class="header">
+    <header class="header">
         <h1>Matemātisko Simbolu Vārdnīca</h1>
         <form id="uploadForm" enctype="multipart/form-data">
             <input type="file" id="fileInput" accept=".txt">
             <button type="submit">📤 Augšupielādēt</button>
         </form>
-    </div>
+    </header>
 
     <!-- 📌 Pamatdaļa -->
-    <div class="container">
-        <h2>📌 Satura Rādītājs</h2>
-        <ul id="symbolList">
-            <!-- Šeit dinamiski tiks pievienotas saites uz tematiskajiem blokiem -->
-        </ul>
+    <main class="container">
+        <section>
+            <h2>📌 Satura Rādītājs</h2>
+            <nav role="navigation">
+                <ul id="symbolList">
+                    <!-- Šeit dinamiski tiks pievienotas saites uz tematiskajiem blokiem -->
+                </ul>
+            </nav>
+        </section>
 
-        <div id="contentSection">
+        <section id="contentSection">
             <!-- Šeit tiks ielādēta pilnā informācija -->
-        </div>
-    </div>
+        </section>
+    </main>
 
     <!-- ℹ️ Kājenes sadaļa -->
     <footer>
