@@ -1,11 +1,11 @@
-pip install --upgrade pip
+from flask import Flask, request, jsonify
 import os
 from openai import OpenAI
-from flask import Flask, request, jsonify
 
-# 🚀 API atslēga tiek ielādēta no Render Environment Variables
-if not os.getenv("OPENAI_API_KEY"):
-    raise ValueError("❌ Kļūda: OpenAI API atslēga nav atrasta Render vidē!")
+# 🚀 API atslēga tiek ielādēta no Render Environment Variables vai GitHub Secrets
+api_key = os.getenv("OPENAI_API_KEY") or os.getenv("GITHUB_API_KEY")
+if not api_key:
+    raise ValueError("❌ Kļūda: OpenAI API atslēga nav atrasta Render vidē vai GitHub Secrets!")
 
 # ✅ Pareizais OpenAI klienta inicializācijas veids
 client = OpenAI()  # API atslēgu SDK nolasa automātiski no ENV

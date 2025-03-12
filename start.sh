@@ -1,6 +1,15 @@
+# filepath: /workspaces/arturavardnica/start.sh
 #!/bin/bash
+
+# Install pip if not already installed
+sudo apt-get update
+sudo apt-get install -y python3-pip
+
+# Install gunicorn if not already installed
+pip3 install gunicorn
+
 echo "🚀 Starting Gunicorn server..."
-gunicorn -w 4 -b 0.0.0.0:10000 server:app &
+/home/codespace/.local/bin/gunicorn -c /workspaces/arturavardnica/gunicorn_config.py server:app &
 
 # ✅ Diagnosticējiet servera darbību
 sleep 5
