@@ -1,5 +1,8 @@
 import os
 import openai
+from openai import OpenAI
+
+client = OpenAI()
 from flask import Flask, request, render_template, jsonify
 from flask_cors import CORS
 
@@ -46,6 +49,19 @@ def upload_file():
     return jsonify({"message": "✅ Fails apstrādāts!", "html_content": formatted_content})
 
 # 🔥 OpenAI API Teksta Pārveidošana
+import openai
+
+
+def convert_text_to_html(text):
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[
+            {"role": "system", "content": "Formātējiet šo tekstu kā HTML dokumentu."},
+            {"role": "user", "content": text}
+        ],
+        temperature=0  # Nodrošina precīzākas atbildes
+    )
+    return response.choices[0].message.content
 def convert_text_to_html(text):
     try:
         response = openai.ChatCompletion.create(
