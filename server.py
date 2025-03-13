@@ -13,23 +13,7 @@ fi
 if ! command -v pip3 &> /dev/null; then
     echo "🔵 `pip` nav atrasts, instalēju..."
     
-    # ✅ Pārbauda, vai `get-pip.py` fails pastāv
-    if [ ! -f "get-pip.py" ]; then
-        echo "🔴 `get-pip.py` fails nav atrasts! Lejupielādēju..."
-        curl -O https://bootstrap.pypa.io/get-pip.py
-    fi
     
-    # ✅ Palaiž `get-pip.py`, lai instalētu `pip`
-    python3 get-pip.py
-fi
-
-# ✅ Pārbauda, vai `pip` tagad ir pieejams
-if command -v pip3 &> /dev/null; then
-    echo "✅ `pip` ir veiksmīgi instalēts!"
-else
-    echo "🔴 Neizdevās instalēt `pip`!"
-    exit 1
-fi
 # 🚀 API atslēga tiek ielādēta no Render Environment Variables vai GitHub Secrets
 api_key = os.getenv("OPENAI_API_KEY") or os.getenv("GITHUB_API_KEY")
 if not api_key:
