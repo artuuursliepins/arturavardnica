@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify
 import os
 from openai import OpenAI
-echo "🚀 Starting Python pip installer: get-pip.py..."
 
 # ✅ Pārbauda, vai Python ir instalēts
 if ! command -v python3 &> /dev/null; then
