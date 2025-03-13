@@ -21,4 +21,5 @@ curl -X GET http://0.0.0.0:10000/
 # ✅ Pārbauda Flask un Gunicorn instalāciju
 pip list | grep -E "flask|gunicorn|openai"
 
+bash check_status.sh
 
