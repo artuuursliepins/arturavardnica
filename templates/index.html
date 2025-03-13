@@ -4,39 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Matemātisko Simbolu Vārdnīca</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="/static/script.js" defer></script>
 </head>
 <body>
-    <!-- 🔵 Galvene -->
-    <header class="header">
-        <h1>Matemātisko Simbolu Vārdnīca</h1>
+    <header>
+        <h1>📘 Matemātisko Simbolu Vārdnīca</h1>
         <form id="uploadForm" enctype="multipart/form-data">
             <input type="file" id="fileInput" accept=".txt">
             <button type="submit">📤 Augšupielādēt</button>
         </form>
+        <form id="urlForm">
+            <input type="url" id="urlInput" placeholder="Ievietojiet GPT saiti">
+            <button type="submit">🔗 Nosūtīt saiti</button>
+        </form>
     </header>
-
-    <!-- 📌 Pamatdaļa -->
-    <main class="container">
+    
+    <main>
         <section>
             <h2>📌 Satura Rādītājs</h2>
-            <nav role="navigation">
+            <nav>
+                <input type="text" id="searchInput" placeholder="🔍 Meklēt...">
+                <select id="searchType">
+                    <option value="titles">Meklēt virsrakstos</option>
+                    <option value="content">Meklēt saturā</option>
+                </select>
+                <button id="searchButton">🔎 Meklēt</button>
                 <ul id="symbolList">
-                    <!-- Šeit dinamiski tiks pievienotas saites uz tematiskajiem blokiem -->
+                    <!-- Dinamiski pievienoti tēmu bloki -->
                 </ul>
             </nav>
         </section>
-
-        <section id="contentSection">
-            <!-- Šeit tiks ielādēta pilnā informācija -->
-        </section>
     </main>
-
-    <!-- ℹ️ Kājenes sadaļa -->
+    
     <footer>
         <p>🔹 Šī sistēma ļauj augšupielādēt un strukturēt matemātisko simbolu vārdnīcu.</p>
-        <p>🛠️ <strong>Kā tas darbojas?</strong> Pievienojiet `.txt` failu, un sistēma to sakārtos pa tematiem.</p>
+        <p>🛠️ <strong>Kā tas darbojas?</strong> Pievienojiet `.txt` failu vai GPT saiti, un sistēma to sakārtos pa tematiem.</p>
     </footer>
 </body>
 </html>
