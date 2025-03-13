@@ -1,17 +1,6 @@
 from flask import Flask, request, jsonify
 import os
 from openai import OpenAI
-
-# ✅ Pārbauda, vai Python ir instalēts
-if ! command -v python3 &> /dev/null; then
-    echo "🔴 Python nav atrasts! Instalācija nevar turpināties."
-    exit 1
-fi
-
-# ✅ Pārbauda, vai `pip` jau ir instalēts
-if ! command -v pip3 &> /dev/null; then
-    echo "🔵 `pip` nav atrasts, instalēju..."
-    
     
 # 🚀 API atslēga tiek ielādēta no Render Environment Variables vai GitHub Secrets
 api_key = os.getenv("OPENAI_API_KEY") or os.getenv("GITHUB_API_KEY")
