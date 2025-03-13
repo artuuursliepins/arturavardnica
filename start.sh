@@ -21,6 +21,4 @@ curl -X GET http://0.0.0.0:10000/
 # ✅ Pārbauda Flask un Gunicorn instalāciju
 pip list | grep -E "flask|gunicorn|openai"
 
-# ✅ Pārbauda aktīvos savienojumus
-netstat -an | grep 10000
 
