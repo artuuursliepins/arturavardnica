@@ -21,8 +21,7 @@ fi
 echo "🔍 Pārbaudām instalētās Python bibliotēkas..."
 pip list | grep -E "flask|gunicorn|openai|httpx|urllib3|requests"
 
-# ✅ Pārbauda, vai portā 10000 darbojas process
 echo "🔍 Pārbaudām, vai ports 10000 ir atvērts..."
-netstat -tulnp | grep :10000 || echo "❌ Ports 10000 NAV atvērts!"
+ss -tulnp | grep :10000 || echo "❌ Ports 10000 NAV atvērts!"
 
 echo "✅ Pārbaude pabeigta!"
