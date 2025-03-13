@@ -1,74 +1,45 @@
-document.getElementById("uploadForm").addEventListener("submit", async function (e) {
-    e.preventDefault();
-    let formData = new FormData();
-    let fileInput = document.getElementById("fileInput");
+document.addEventListener("DOMContentLoaded", function () {
+    const searchInput = document.getElementById("searchInput");
+    const searchButton = document.getElementById("searchButton");
+    const resultsSection = document.getElementById("searchResults");
+    const resultsList = document.getElementById("resultsList");
 
-    if (fileInput.files.length === 0) {
-        alert("❌ Lūdzu izvēlies failu!");
-        return;
+    searchButton.addEventListener("click", search);
+    searchInput.addEventListener("keypress", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            search();
+        }
+    });
+
+    function search() {
+        const query = searchInput.value.trim().toLowerCase();
+        if (!query) return;
+
+        fetch("/search?query=" + encodeURIComponent(query))
+            .then(response => response.json())
+            .then(results => {
+                resultsList.innerHTML = "";
+                if (results.length === 0) {
+                    resultsList.innerHTML = "<li>❌ Nav rezultātu.</li>";
+                    return;
+                }
+
+                results.forEach(result => {
+                    const li = document.createElement("li");
+                    li.innerHTML = `<a href="${result.url}#highlight">${result.title}</a>
+                                    <p>${highlightText(result.snippet, query)}</p>`;
+                    resultsList.appendChild(li);
+                });
+
+                resultsSection.classList.remove("hidden");
+            })
+            .catch(error => console.error("Meklēšanas kļūda:", error));
     }
 
-    formData.append("file", fileInput.files[0]);
-
-    try {
-        let response = await fetch("/upload", {
-            method: "POST",
-            body: formData
-        });
-
-        let data = await response.json();
-        if (data.error) {
-            alert("❌ Kļūda: " + data.error);
-        } else {
-            document.getElementById("symbolList").innerHTML = data.html_content;
-            alert("✅ Fails veiksmīgi apstrādāts!");
-        }
-    } catch (error) {
-        alert("❌ Neizdevās savienoties ar serveri!");
+    function highlightText(text, keyword) {
+        const regex = new RegExp(`(${keyword})`, "gi");
+        return text.replace(regex, "<span class='highlight'>$1</span>");
     }
 });
 
-// 🔍 Meklēšanas funkcija visās lapās un tikai virsrakstos
-function searchSymbols() {
-    let input = document.getElementById("searchInput").value.toLowerCase();
-    let searchType = document.getElementById("searchType").value;
-    let items = document.querySelectorAll("#symbolList li");
-
-    items.forEach(item => {
-        let text = searchType === "titles" ? item.querySelector("a").textContent.toLowerCase() : item.textContent.toLowerCase();
-        if (text.includes(input)) {
-            item.style.display = "block";
-            highlightText(item, input);
-        } else {
-            item.style.display = "none";
-        }
-    });
-}
-
-// 🔍 Izceļ meklētos vārdus
-function highlightText(element, query) {
-    let innerHTML = element.innerHTML;
-    let regex = new RegExp(`(${query})`, "gi");
-    element.innerHTML = innerHTML.replace(regex, "<span class='highlight'>$1</span>");
-}
-
-// 🌍 Apstrādā saites uz apakšlapām un ielādē saturu
-function loadPage(url) {
-    fetch(url)
-        .then(response => response.text())
-        .then(html => {
-            document.getElementById("contentSection").innerHTML = html;
-            attachSearchFeature(); // Pievieno meklēšanas funkcionalitāti arī jaunajām lapām
-        })
-        .catch(error => {
-            console.error("❌ Kļūda ielādējot lapu:", error);
-        });
-}
-
-// 🚀 Pievieno meklēšanas funkciju jaunajiem lapas elementiem
-function attachSearchFeature() {
-    let searchInput = document.getElementById("searchInput");
-    if (searchInput) {
-        searchInput.addEventListener("input", searchSymbols);
-    }
-}
