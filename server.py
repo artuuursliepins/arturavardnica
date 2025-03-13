@@ -1,14 +1,14 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import os
 from openai import OpenAI
-    
+
 # 🚀 API atslēga tiek ielādēta no Render Environment Variables vai GitHub Secrets
 api_key = os.getenv("OPENAI_API_KEY") or os.getenv("GITHUB_API_KEY")
 if not api_key:
     raise ValueError("❌ Kļūda: OpenAI API atslēga nav atrasta Render vidē vai GitHub Secrets!")
 
-# ✅ Pareizais OpenAI klienta inicializācijas veids
-client = OpenAI()  # API atslēgu SDK nolasa automātiski no ENV
+# ✅ OpenAI API inicializācija
+client = OpenAI()
 
 # 📂 Direktorijas failiem
 UPLOADS_DIR = "uploads"
@@ -16,6 +16,13 @@ OUTPUT_DIR = "templates"
 
 os.makedirs(UPLOADS_DIR, exist_ok=True)
 os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+# ✅ Mājaslapas ielāde
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return render_template("index.html")  # Tagad tiek servēts HTML fails
 
 def process_text(text):
     """ 📌 Pārveido tekstu par SEO draudzīgu un semantiski korektu HTML """
@@ -55,9 +62,6 @@ def process_text(text):
         print(f"🚨 Kļūda OpenAI API izsaukumā: {str(e)}")
         return "<p>🚨 Kļūda: Sistēmas kļūme. Mēģiniet vēlreiz!</p>"
 
-# 🚀 Flask API
-app = Flask(__name__)
-
 @app.route("/upload", methods=["POST"])
 def upload_file():
     """ 📤 Augšupielādē un apstrādā tekstu failu """
@@ -85,15 +89,8 @@ def upload_file():
 
     except Exception as e:
         return jsonify({"error": f"🚨 Servera kļūda: {str(e)}"}), 500
-app = Flask(__name__)
 
-@app.route("/")
-def home():
-    return "✅ Serveris darbojas!"
-if __name__ == "__main__":
-    port = int(os.getenv("PORT", 10000))  # Ja PORT nav iestatīts, izmanto 10000
-    app.run(host="0.0.0.0", port=port, debug=True) 
-    
 # 🚀 Startē Flask serveri
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.getenv("PORT", 10000)), debug=True)
+    port = int(os.getenv("PORT", 10000))  # Ja PORT nav iestatīts, izmanto 10000
+    app.run(host="0.0.0.0", port=port, debug=True)
