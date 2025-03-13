@@ -11,6 +11,8 @@ if ! pip3 show gunicorn &> /dev/null; then
     pip3 install gunicorn
 fi
 
+gunicorn --workers=4 --bind=0.0.0.0:10000 server:app --timeout 120
+
 echo "🚀 Starting Gunicorn server..."
 gunicorn -w 4 -b 0.0.0.0:10000 server:app &
 
