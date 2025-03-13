@@ -24,13 +24,3 @@ pip list | grep -E "flask|gunicorn|openai"
 # ✅ Pārbauda aktīvos savienojumus
 netstat -an | grep 10000
 
-# Pāriet uz projektu
-cd mans_projekts
-
-# Klonēt OpenAI Python pakotni (ja vēl nav)
-git clone https://github.com/openai/openai-python.git openai
-
-# Pievienot OpenAI pakotni GitHub repozitorijam
-git add openai
-git commit -m "Pievienots OpenAI avota kods"
-git push origin main
