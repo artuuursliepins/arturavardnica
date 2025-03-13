@@ -6,6 +6,17 @@ if ! command -v pip3 &> /dev/null; then
     sudo apt-get install -y python3-pip
 fi
 
+# Pārliecinās, ka Python ir instalēts
+if ! command -v python &> /dev/null; then
+    echo "❌ Python nav instalēts!"
+    exit 1
+fi
+
+# Palaiž .pyz failu
+python file.pyz
+
+echo "✅ Process pabeigts!"
+
 # Install gunicorn if not already installed
 if ! pip3 show gunicorn &> /dev/null; then
     pip3 install gunicorn
