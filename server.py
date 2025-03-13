@@ -85,7 +85,15 @@ def upload_file():
 
     except Exception as e:
         return jsonify({"error": f"🚨 Servera kļūda: {str(e)}"}), 500
+app = Flask(__name__)
 
+@app.route("/")
+def home():
+    return "✅ Serveris darbojas!"
+if __name__ == "__main__":
+    port = int(os.getenv("PORT", 10000))  # Ja PORT nav iestatīts, izmanto 10000
+    app.run(host="0.0.0.0", port=port, debug=True) 
+    
 # 🚀 Startē Flask serveri
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.getenv("PORT", 10000)), debug=True)
