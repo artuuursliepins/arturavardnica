@@ -1,5 +1,7 @@
 #!/bin/bash
 
+pip install --upgrade pip
+
 echo "🚀 Checking for pip installation..."
 if ! command -v pip3 &> /dev/null; then
     apt-get update
