@@ -4,49 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Matemātisko Simbolu Vārdnīca</title>
-    <link rel="stylesheet" href="/static/style.css">
-    <script src="/static/script.js" defer></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
 </head>
 <body>
-    <header>
-        <h1>📘 Matemātisko Simbolu Vārdnīca</h1>
-        <form id="uploadForm" enctype="multipart/form-data">
-            <input type="file" id="fileInput" accept=".txt">
-            <button type="submit">📤 Augšupielādēt</button>
-        </form>
-        <form id="urlForm">
-            <input type="url" id="urlInput" placeholder="Ievietojiet GPT saiti">
-            <button type="submit">🔗 Nosūtīt saiti</button>
-        </form>
+    <header class="header">
+        📘 Matemātisko Simbolu Vārdnīca
     </header>
     
-    <main>
+    <main class="container">
+        <!-- 🔍 Meklēšanas sistēma -->
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Meklēt...">
+            <select id="searchType">
+                <option value="titles">Meklēt virsrakstos</option>
+                <option value="content">Meklēt saturā</option>
+            </select>
+            <button onclick="performSearch()">🔎 Meklēt</button>
+        </div>
+        <div id="searchResults" class="search-results"></div>
+
+        <!-- 📤 Failu augšupielāde un GPT saite -->
+        <input type="file" id="fileInput" accept=".txt">
+        <button onclick="uploadFile()">📤 Augšupielādēt</button>
+        <input type="text" id="gptUrlInput" placeholder="Ievietojiet GPT saiti">
+        <button onclick="submitGPTUrl()">🔗 Nosūtīt saiti</button>
+        
+        <!-- 📌 Satura Rādītājs -->
         <section>
             <h2>📌 Satura Rādītājs</h2>
-            <nav>
-                <input type="text" id="searchInput" placeholder="🔍 Meklēt...">
-                <select id="searchType">
-                    <option value="titles">Meklēt virsrakstos</option>
-                    <option value="content">Meklēt saturā</option>
-                </select>
-                <button id="searchButton">🔎 Meklēt</button>
-                <ul id="symbolList">
-                    <!-- Dinamiski pievienoti tēmu bloki -->
-                </ul>
-            </nav>
-        </section>
-        
-        <section id="searchResults" class="hidden">
-            <h2>🔍 Meklēšanas rezultāti</h2>
-            <ul id="resultsList">
-                <!-- Šeit tiks pievienoti meklēšanas rezultāti -->
-            </ul>
+            <ul id="symbolList"></ul>
         </section>
     </main>
     
     <footer>
-        <p>🔹 Šī sistēma ļauj augšupielādēt un strukturēt matemātisko simbolu vārdnīcu.</p>
-        <p>🛠️ <strong>Kā tas darbojas?</strong> Pievienojiet `.txt` failu vai GPT saiti, un sistēma to sakārtos pa tematiem.</p>
+        🔹 Šī sistēma ļauj augšupielādēt un strukturēt matemātisko simbolu vārdnīcu.
     </footer>
 </body>
 </html>
+
