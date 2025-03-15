@@ -42,6 +42,9 @@ body {
     overflow-y: auto;
     flex-grow: 1;
     min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 button {
@@ -77,6 +80,8 @@ input[type="text"], input[type="file"] {
     gap: 10px;
     align-items: center;
     margin-top: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .search-results {
@@ -84,7 +89,21 @@ input[type="text"], input[type="file"] {
     padding: 10px;
     border-radius: 6px;
     margin-top: 10px;
-    display: none;
+    display: block;
+    width: 100%;
+    max-width: 800px;
+    text-align: left;
+}
+
+.search-results p {
+    background: #10a37f;
+    padding: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.search-results p:hover {
+    background: #0f8b68;
 }
 
 footer {
@@ -98,3 +117,4 @@ footer {
     position: relative;
     bottom: 0;
 }
+
