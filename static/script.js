@@ -30,8 +30,17 @@ function submitGPTUrl() {
         alert("❌ Lūdzu, ievadiet GPT saiti!");
         return;
     }
-    alert("🔗 Saites nosūtīšana veiksmīga!");
-    // Šeit var pievienot funkcionalitāti saites apstrādei
+    fetch("/process_gpt", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: urlInput })
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert("🔗 Saites nosūtīšana veiksmīga!");
+        loadSymbolList();
+    })
+    .catch(error => console.error("🚨 Kļūda GPT saites apstrādē:", error));
 }
 
 function loadSymbolList() {
