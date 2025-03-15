@@ -10,7 +10,7 @@ if not api_key:
 # ✅ OpenAI API inicializācija
 client = OpenAI()
 
-# 📂 Direktorijas failiem
+# 🐂 Direktorijas failiem
 UPLOADS_DIR = "uploads"
 OUTPUT_DIR = "templates"
 
@@ -28,7 +28,6 @@ def process_text(text):
     """ 📌 Pārveido tekstu par SEO draudzīgu un semantiski korektu HTML """
     if not text.strip():
         return "<p>❌ Tukšs saturs! Lūdzu, augšupielādējiet failu ar tekstu.</p>"
-
     try:
         response = client.chat.completions.create(
             model="gpt-4o",
@@ -55,16 +54,14 @@ def process_text(text):
             ],
             temperature=0
         )
-
         return response.choices[0].message.content
-
     except Exception as e:
         print(f"🚨 Kļūda OpenAI API izsaukumā: {str(e)}")
         return "<p>🚨 Kļūda: Sistēmas kļūme. Mēģiniet vēlreiz!</p>"
 
 @app.route("/upload", methods=["POST"])
 def upload_file():
-    """ 💄 Augšupielādē un apstrādā tekstu failu """
+    """ 📤 Augšupielādē un apstrādā tekstu failu """
     try:
         if "file" not in request.files:
             return jsonify({"error": "❌ Nav augšupielādēts fails!"}), 400
@@ -76,19 +73,30 @@ def upload_file():
         file_path = os.path.join(UPLOADS_DIR, file.filename)
         file.save(file_path)
 
-        # 🔍 Pārbauda, vai fails ir tukšs
         if os.path.getsize(file_path) == 0:
             return jsonify({"error": "❌ Fails ir tukšs!"}), 400
 
-        # 💛 Nolasa failu un apstrādā saturu
         with open(file_path, "r", encoding="utf-8") as f:
             content = f.read()
 
         formatted_content = process_text(content)
         return jsonify({"message": "✅ Fails apstrādāts!", "html_content": formatted_content})
-
     except Exception as e:
         return jsonify({"error": f"🚨 Servera kļūda: {str(e)}"}), 500
+
+@app.route("/get_symbols", methods=["GET"])
+def get_symbols():
+    """ 📂 Atgriež augšupielādēto failu sarakstu """
+    try:
+        files = os.listdir(UPLOADS_DIR)
+        return jsonify({"files": files})
+    except Exception as e:
+        return jsonify({"error": f"🚨 Kļūda: {str(e)}"}), 500
+
+# 🚀 Startē Flask serveri
+if __name__ == "__main__":
+    port = int(os.getenv("PORT", 10000))  # Ja PORT nav iestatīts, izmanto 10000
+    app.run(host="0.0.0.0", port=port, debug=True)
 
 # 🚀 Startē Flask serveri
 if __name__ == "__main__":
